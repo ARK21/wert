@@ -36,7 +36,7 @@ func NewAPIClient(baseUrl, apiKey string) (*APIClient, error) {
 func (c *APIClient) Exchange(ctx context.Context, ex domain.Exchange) (float64, error) {
 	req, err := c.cmcReq(ctx, ex)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("failed to create cmcReq: %w", err)
 	}
 
 	resp, err := c.Do(req)
@@ -56,7 +56,7 @@ func (c *APIClient) Exchange(ctx context.Context, ex domain.Exchange) (float64, 
 
 	res, err := c.cmcRes(body)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("failed to get cmcRes: %w", err)
 	}
 
 	d, ok := res.Data[ex.From]
